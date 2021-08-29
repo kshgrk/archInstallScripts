@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#!/bin/bash  
+  
+# Read the user input   
+  
+echo "Enter the user-name: "  
+read usrname  
+echo "User Name will be $first_name"  
+
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 hwclock --systohc
 sed -i '177s/.//' /etc/locale.gen
@@ -24,11 +32,11 @@ systemctl enable tlp
 systemctl enable NetworkManager
 systemctl enable NetworkManager
 
-useradd -m kshgrk
-echo kshgrk:password | chpasswd
-usermod -aG libvirt kshgrk
+useradd -m $usrname
+echo $usrname:password | chpasswd
+usermod -aG libvirt $usrname
 
-echo "kshgrk ALL=(ALL) ALL" >> /etc/sudoers.d/kshgrk
+echo "$usrname ALL=(ALL) ALL" >> /etc/sudoers.d/$usrname
 
 print "\e Done!, Now type [exit, unmout -a and reboot]"
 
