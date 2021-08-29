@@ -6,9 +6,13 @@
   
 echo "Enter the user-name: "  
 read usrname  
-echo "User Name will be $first_name"  
+echo "User Name will be $usrname"  
 
-ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+
+echo "enter time/zone, for example Asia/Kolkata , yes capital "
+read tz
+ln -sf /usr/share/zoneinfo/$tz /etc/localtime
+
 hwclock --systohc
 sed -i '177s/.//' /etc/locale.gen
 locale-gen
