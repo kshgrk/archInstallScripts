@@ -1,5 +1,3 @@
-#!/bin/bash
-
 #!/bin/bash  
   
 # Read the user input   
