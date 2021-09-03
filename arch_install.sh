@@ -6,10 +6,31 @@ echo "Enter the user-name: "
 read usrname  
 echo "User Name will be $usrname"  
 
+timez="0"
+echo -en "\e[1m\e[33m  Now set your local time zone \e[0m\\n\\n"
 
-echo "enter time/zone, for example Asia/Kolkata , yes capital "
-read tz
-ln -sf /usr/share/zoneinfo/$tz /etc/localtime
+while [ "$timez" == "0" ]
+do
+    echo -en "  If don\'t know your time zone then you can use following command to list all available time zones\\n\\n"
+    echo -en "\e[1m\e[4m"$ timedatectl list-timezones"\e[0m\\n\\n"
+    echo -en "  or you can visit \e[1mhttp://www.timezoneconverter.com/cgi-bin/findzone.tzc\e[0m to find your time zone \\n\\n"
+    echo "  enter Time Zone,  "
+    echo "  Example for Asia/Kolkata, enter Asia Kolkata (separated by single space)"
+    printf "===> "
+    read T1 T2
+    ls /usr/share/zoneinfo/*/* | grep ${T1}/${T2} && echo " A match found for your time zone " && timez="1"
+    if [ "${timez}" == "1" ]
+    then
+        echo -en "\e[32m\e[1m  Success\e[0m\\n"
+        
+        ln -sf /usr/share/zoneinfo/${T1}/${T2} /etc/localtime
+        
+        echo -en "created symlink \e[32m/etc/localtime/usr/share/zoneinfo/$T1/$T2-->/etc/localtime \e[0m\\n\\n"
+    else
+        echo -en " \\n\e[31m\e[1m wrong input try again\e[0m\\n\\n"
+    fi
+done
+
 
 hwclock --systohc
 sed -i '177s/.//' /etc/locale.gen
