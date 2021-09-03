@@ -18,13 +18,19 @@ do
     echo "  Example for Asia/Kolkata, enter Asia Kolkata (separated by single space)"
     printf "===> "
     read T1 T2
-    ls /usr/share/zoneinfo/*/* | grep ${T1}/${T2} && echo " A match found for your time zone " && timez="1"
+    ls /usr/share/zoneinfo/*/* | grep ${T1}/${T2} && echo -en " A match found for your time zone \\n\\n" && timez="1"
+
     if [ "${timez}" == "1" ]
     then
+        ln -sf /usr/share/zoneinfo/${T1}/${T2} /etc/localtime || timez="0"
+        
+        if [ "${timez}" == "0" ]
+        then
+            echo -en "\e[31m\e[1m!!!!!!\e[0m\\n"
+            continue
+        fi
+        
         echo -en "\e[32m\e[1m  Success\e[0m\\n"
-        
-        ln -sf /usr/share/zoneinfo/${T1}/${T2} /etc/localtime
-        
         echo -en "created symlink \e[32m/etc/localtime/usr/share/zoneinfo/$T1/$T2-->/etc/localtime \e[0m\\n\\n"
     else
         echo -en " \\n\e[31m\e[1m wrong input try again\e[0m\\n\\n"
